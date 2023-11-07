@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class OrderDTO {
-    private String orderId;
-    private String userId;
+    private int orderId;
+    private int userId;
     private Double totalPrice;
     private Boolean isPrepared;
 }
