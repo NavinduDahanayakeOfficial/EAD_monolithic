@@ -12,6 +12,5 @@ import java.util.List;
 @Data
 public class OrderRequest {
     private int userId;
-    private Double totalPrice;
     private List<OrderItem> orderItems;
 }

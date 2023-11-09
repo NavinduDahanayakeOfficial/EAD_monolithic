@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 public class OrderItemRequest {
     private int itemId;
     private int quantity;
-    private Double unitPrice;
+    private Double unitPrice;  //this should be retrieved from item table
 }

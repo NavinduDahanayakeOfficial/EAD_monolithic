@@ -21,11 +21,6 @@ public class OrderController {
     @Autowired
     private ModelMapper modelMapper;
 
-    @GetMapping("/getOrders")
-    public List<OrderDTO> getOrder(){
-        return orderService.getAllOrders();
-    }
-
     @PostMapping("/saveOrder")
     public OrderDTO saveOrder(@RequestBody OrderRequest orderRequest){
         Order order = orderService.saveOrder(orderRequest);
@@ -34,10 +29,19 @@ public class OrderController {
     }
 
 
+    @GetMapping("/getOrders")
+    public List<OrderDTO> getOrder(){
+        return orderService.getAllOrders();
+    }
+
+    @GetMapping("/getOrderById/{id}")
+    public OrderDTO getOrderById(@PathVariable int id){
+        return modelMapper.map(orderService.getOrderById(id), OrderDTO.class);
+    }
 
     @PutMapping("/updateOrder")
-    public String updateOrder(){
-        return "updateOrder";
+    public Order updateOrder(@RequestBody OrderDTO orderDTO){
+        return orderService.updateOrder(orderDTO);
     }
 
     @DeleteMapping("/deleteOrder")

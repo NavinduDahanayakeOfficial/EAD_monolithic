@@ -31,7 +31,6 @@ public class OrderService {
     public Order saveOrder(OrderRequest orderRequest){
         Order order =new Order();
         order.setUserId(orderRequest.getUserId());
-        order.setTotalPrice(orderRequest.getTotalPrice());
         order.setIsPrepared(false);
 
         List<OrderItem> orderItems = new ArrayList<>();
@@ -61,6 +60,16 @@ public class OrderService {
         List<Order> orderList = orderRepo.findAll();
         return modelMapper.map(orderList, new TypeToken<List<OrderDTO>>() {
         }.getType());
+    }
+
+
+    public Order getOrderById(int id) {
+        Order order = orderRepo.findById(id).orElse(null);
+        return order;
+    }
+
+    public Order updateOrder(OrderDTO orderDTO){
+        return orderRepo.save(modelMapper.map(orderDTO, Order.class));
     }
 }
 
