@@ -1,25 +1,28 @@
 package com.EAD.EAD_monolithic.entity;
 
+import com.EAD.EAD_monolithic.entity.Order;
+import com.EAD.EAD_monolithic.entity.OrderItemId;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Table(name = "order_items")
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@ToString
 public class OrderItem {
 
-    @Id
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id")
-    private Order order;
+    @EmbeddedId
+    private OrderItemId id;
 
-    @Id
-    @Column(name = "item_id", nullable = false)
-    private Long itemId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id", nullable = false)
+    @MapsId("orderId")
+    private Order order;
 
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
@@ -29,5 +32,7 @@ public class OrderItem {
 
     @Column(name = "total_unit_price", nullable = false)
     private Double totalUnitPrice;
+
+
 
 }
