@@ -2,7 +2,6 @@ package com.EAD.EAD_monolithic.service;
 
 
 import com.EAD.EAD_monolithic.dto.OrderDTO;
-import com.EAD.EAD_monolithic.dto.OrderItemRequest;
 import com.EAD.EAD_monolithic.dto.OrderRequest;
 import com.EAD.EAD_monolithic.entity.Order;
 import com.EAD.EAD_monolithic.entity.OrderItem;
@@ -29,21 +28,20 @@ public class OrderService {
     @Autowired
     private ModelMapper modelMapper;
 
-    public Order saveOrder(OrderRequest orderRequest) {
-        Order order = new Order();
+    public Order saveOrder(OrderRequest orderRequest){
+        Order order =new Order();
         order.setUserId(orderRequest.getUserId());
         order.setTotalPrice(orderRequest.getTotalPrice());
         order.setIsPrepared(false);
 
         List<OrderItem> orderItems = new ArrayList<>();
-        for (OrderItem orderItemRequest : orderRequest.getOrderItems()) {
+        for(OrderItem orderItemRequest : orderRequest.getOrderItems()){
             OrderItem orderItem = new OrderItem();
+            orderItem.setOrder(order);
             orderItem.setItemId(orderItemRequest.getItemId());
-            orderItem.setOrderId(order.getOrderId());
-            orderItem.setId(orderItemRequest.getId()); // Change productId to itemId
             orderItem.setQuantity(orderItemRequest.getQuantity());
             orderItem.setUnitPrice(orderItemRequest.getUnitPrice());
-            orderItem.setTotalUnitPrice(orderItemRequest.getUnitPrice() * orderItemRequest.getQuantity());
+            orderItem.setTotalUnitPrice(orderItemRequest.getQuantity()* orderItemRequest.getUnitPrice());
 
             orderItems.add(orderItem);
         }
@@ -52,8 +50,6 @@ public class OrderService {
 
         return orderRepo.save(order);
     }
-
-
 
     public List<OrderDTO> getAllOrders() {
         List<Order> orderList = orderRepo.findAll();
