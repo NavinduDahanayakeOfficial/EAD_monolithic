@@ -1,9 +1,12 @@
 package com.EAD.EAD_monolithic.controller;
 
 import com.EAD.EAD_monolithic.dto.OrderDTO;
+import com.EAD.EAD_monolithic.dto.OrderRequest;
 import com.EAD.EAD_monolithic.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "api/v1/order")
@@ -13,15 +16,15 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
-    @GetMapping("/getOrder")
-    public String getOrder(){
-        return "getOrder";
+    @GetMapping("/getOrders")
+    public List<OrderDTO> getOrder(){
+        return orderService.getAllOrders();
     }
 
     @PostMapping("/saveOrder")
-    public OrderDTO saveOrder(@RequestBody OrderDTO orderDTO){
-        orderService.saveOrder(orderDTO);
-        return null;
+    public OrderRequest saveOrder(@RequestBody OrderRequest orderRequest){
+        orderService.saveOrder(orderRequest);
+        return orderRequest;
     }
 
     @PutMapping("/updateOrder")
