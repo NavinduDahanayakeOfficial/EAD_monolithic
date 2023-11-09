@@ -13,16 +13,27 @@ import lombok.NoArgsConstructor;
 public class OrderItem {
 
     @Id
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "orderItem_sequence"
+    )
+    @SequenceGenerator(
+            name = "orderItem_sequence",
+            sequenceName = "orderItem_sequence",
+            allocationSize = 1
+    )
+    private int orderItemId;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
     private Order order;
 
-    @Id
+
     @Column(name = "item_id", nullable = false)
-    private Long itemId;
+    private int itemId;
 
     @Column(name = "quantity", nullable = false)
-    private Integer quantity;
+    private int quantity;
 
     @Column(name = "unit_price", nullable = false)
     private Double unitPrice;

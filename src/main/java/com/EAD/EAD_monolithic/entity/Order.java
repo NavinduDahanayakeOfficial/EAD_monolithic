@@ -24,7 +24,6 @@ public class Order {
             sequenceName = "order_sequence",
             allocationSize = 1
     )
-
     private int orderId;
 
     @Column(name = "user_id", nullable = false)
