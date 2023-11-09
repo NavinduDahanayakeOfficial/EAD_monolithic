@@ -46,6 +46,12 @@ public class OrderService {
             orderItems.add(orderItem);
         }
 
+        double totalPrice = 0;
+        for(OrderItem orderItem : orderItems){
+            totalPrice += orderItem.getTotalUnitPrice();
+        }
+        order.setTotalPrice(totalPrice);
+
         order.setOrderItems(orderItems);
 
         return orderRepo.save(order);
