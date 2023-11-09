@@ -4,6 +4,7 @@ package com.EAD.EAD_monolithic.service;
 import com.EAD.EAD_monolithic.Exception.OrderNotFoundException;
 import com.EAD.EAD_monolithic.dto.OrderDTO;
 import com.EAD.EAD_monolithic.dto.OrderRequest;
+import com.EAD.EAD_monolithic.dto.OrderUpdateRequest;
 import com.EAD.EAD_monolithic.entity.Order;
 import com.EAD.EAD_monolithic.entity.OrderItem;
 import com.EAD.EAD_monolithic.repo.OrderItemRepo;
@@ -72,8 +73,27 @@ public class OrderService {
         return order;
     }
 
-    public Order updateOrder(OrderDTO orderDTO){
+/*    public Order updateOrder(OrderUpdateRequest orderUpdateRequest, int id){
+        Order order = orderRepo.findById(id).orElse(null);
+        if (order == null) {
+            throw new OrderNotFoundException("Order not found with id " + id);
+        }
+
+        order.setUserId(orderUpdateRequest.getUserId());
+        order.setIsPrepared(orderUpdateRequest.isPrepared());
+
+
+
         return orderRepo.save(modelMapper.map(orderDTO, Order.class));
+    }*/
+
+    public String deleteOrder(int id){
+        Order order = orderRepo.findById(id).orElse(null);
+        if (order == null) {
+            throw new OrderNotFoundException("Order not found with id " + id);
+        }
+        orderRepo.deleteById(id);
+        return "order deleted with id " + id;
     }
 }
 

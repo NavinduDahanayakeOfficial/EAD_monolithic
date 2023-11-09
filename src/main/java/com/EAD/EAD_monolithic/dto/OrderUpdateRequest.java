@@ -1,20 +1,19 @@
 package com.EAD.EAD_monolithic.dto;
 
-import com.EAD.EAD_monolithic.dto.OrderItemRequest;
 import com.EAD.EAD_monolithic.entity.OrderItem;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.List;
 
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Data
-public class OrderDTO {
-    private int orderId;
+@ToString
+public class OrderUpdateRequest {
     private int userId;
-    private Double totalPrice;
-    private Boolean isPrepared;
+    private boolean isPrepared;
     private List<OrderItem> orderItems;
 }

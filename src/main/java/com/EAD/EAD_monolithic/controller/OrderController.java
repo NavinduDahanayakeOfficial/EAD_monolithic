@@ -37,14 +37,14 @@ public class OrderController {
         return modelMapper.map(orderService.getOrderById(id), OrderDTO.class);
     }
 
-    @PutMapping("/updateOrder")
-    public Order updateOrder(@RequestBody OrderDTO orderDTO){
-        return orderService.updateOrder(orderDTO);
-    }
+/*    @PutMapping("/updateOrder/{id}")
+    public Order updateOrder(@RequestBody OrderRequest orderRequest, @PathVariable int id){
+        return orderService.updateOrder(orderDTO,id);
+    }*/
 
-    @DeleteMapping("/deleteOrder")
-    public String deleteOrder(){
-        return "deleteOrder";
+    @DeleteMapping("/deleteOrder/{id}")
+    public String deleteOrder(@PathVariable int id){
+        return orderService.deleteOrder(id);
     }
 
 
