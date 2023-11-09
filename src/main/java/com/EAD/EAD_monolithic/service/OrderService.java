@@ -1,6 +1,7 @@
 package com.EAD.EAD_monolithic.service;
 
 
+import com.EAD.EAD_monolithic.Exception.OrderNotFoundException;
 import com.EAD.EAD_monolithic.dto.OrderDTO;
 import com.EAD.EAD_monolithic.dto.OrderRequest;
 import com.EAD.EAD_monolithic.entity.Order;
@@ -65,6 +66,9 @@ public class OrderService {
 
     public Order getOrderById(int id) {
         Order order = orderRepo.findById(id).orElse(null);
+        if (order == null) {
+            throw new OrderNotFoundException("Order not found with id " + id);
+        }
         return order;
     }
 

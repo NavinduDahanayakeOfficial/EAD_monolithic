@@ -24,10 +24,8 @@ public class OrderController {
     @PostMapping("/saveOrder")
     public OrderDTO saveOrder(@RequestBody OrderRequest orderRequest){
         Order order = orderService.saveOrder(orderRequest);
-
         return modelMapper.map(order, OrderDTO.class);
     }
-
 
     @GetMapping("/getOrders")
     public List<OrderDTO> getOrder(){
