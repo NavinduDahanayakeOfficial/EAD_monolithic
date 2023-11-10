@@ -33,16 +33,15 @@ public class SecurityConfiguration {
 
 
 
-                .requestMatchers(GET,"/api/v1/order/**").hasAnyRole(ADMIN.name(), CUSTOMER.name(), DELIVERY_PERSON.name())
-                .requestMatchers(POST,"/api/v1/order/**").hasAnyAuthority(ADMIN_CREATE.name(), CUSTOMER_CREATE.name())
-                .requestMatchers(PUT,"/api/v1/order/**").hasAnyAuthority(ADMIN.name())
-                .requestMatchers(DELETE,"/api/v1/order/**").hasAnyAuthority(ADMIN_DELETE.name())
+                .requestMatchers(GET,"/api/v1/order/**").hasAnyAuthority(ADMIN_READ.getPermission(), CUSTOMER_READ.getPermission(), DELIVERY_PERSON_READ.getPermission())
+                .requestMatchers(POST,"/api/v1/order/**").hasAnyAuthority(ADMIN_CREATE.getPermission(), CUSTOMER_CREATE.getPermission())
+                .requestMatchers(PUT,"/api/v1/order/**").hasAnyAuthority(ADMIN_UPDATE.getPermission())
+                .requestMatchers(DELETE,"/api/v1/order/**").hasAnyAuthority(ADMIN_DELETE.getPermission())
 
-                .requestMatchers("api/v1/product/**").hasAnyRole(ADMIN.name(), CUSTOMER.name(), DELIVERY_PERSON.name(), INVENTORY_KEEPER.name())
-                .requestMatchers(GET,"/api/v1/product/**").hasAnyAuthority(ADMIN.name(), CUSTOMER.name(), DELIVERY_PERSON.name(), INVENTORY_KEEPER.name())
-                .requestMatchers(POST,"/api/v1/product/**").hasAnyAuthority(ADMIN.name(), INVENTORY_KEEPER.name())
-                .requestMatchers(PUT,"/api/v1/product/**").hasAnyAuthority(ADMIN.name())
-                .requestMatchers(DELETE,"/api/v1/product/**").hasAnyAuthority(ADMIN_DELETE.name())
+                .requestMatchers(GET,"/api/v1/product/**").hasAnyAuthority(ADMIN_READ.getPermission(), CUSTOMER_READ.getPermission(), DELIVERY_PERSON_READ.getPermission())
+                .requestMatchers(POST,"/api/v1/product/**").hasAnyAuthority(ADMIN_CREATE.getPermission(), INVENTORY_KEEPER_CREATE.getPermission())
+                .requestMatchers(PUT,"/api/v1/product/**").hasAnyAuthority(ADMIN_UPDATE.getPermission())
+                .requestMatchers(DELETE,"/api/v1/product/**").hasAnyAuthority(ADMIN_DELETE.getPermission())
 
                 .anyRequest()
                 .authenticated()
