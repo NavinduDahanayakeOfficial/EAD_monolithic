@@ -1,7 +1,9 @@
 package com.EAD.EAD_monolithic.service;
 
+import com.EAD.EAD_monolithic.Exception.OrderNotFoundException;
 import com.EAD.EAD_monolithic.dto.DeliveryDTO;
 import com.EAD.EAD_monolithic.entity.Delivery;
+import com.EAD.EAD_monolithic.entity.Order;
 import com.EAD.EAD_monolithic.repo.DeliveryRepo;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
@@ -32,16 +34,28 @@ public class DeliveryService {
         Delivery delivery = new Delivery();
         delivery.setDeliveryId(deliveryDTO.getDeliveryId());
         delivery.setOrder(orderService.getOrderById(deliveryDTO.getOrderId()));
+        delivery.setStatus(deliveryDTO.getStatus());
         deliveryRepo.save(modelMapper.map(deliveryDTO, Delivery.class));
         return delivery;
     }
 
-    public DeliveryDTO editDelivery(DeliveryDTO deliveryDTO){
-        deliveryRepo.save(modelMapper.map(deliveryDTO, Delivery.class));
-        return deliveryDTO;
+    public Delivery getDeliveryById(int deliveryId) {
+        Delivery delivery = deliveryRepo.findById(deliveryId).orElse(null);
+        if (delivery == null) {
+            throw new OrderNotFoundException("Delivery not found with id " + deliveryId);
+        }
+        return delivery;
     }
 
-    public boolean deleteDelivery(long deliveryId){
+    public Delivery editDelivery(int deliveryId, DeliveryDTO deliveryDTO){
+        Delivery delivery = getDeliveryById(deliveryId);
+        //delivery.setDeliveryId(deliveryDTO.getDeliveryId());
+        delivery.setOrder(orderService.getOrderById(deliveryDTO.getOrderId()));
+        deliveryRepo.save(modelMapper.map(deliveryDTO, Delivery.class));
+        return delivery;
+    }
+
+    public boolean deleteDelivery(int deliveryId){
         deliveryRepo.deleteById(deliveryId);
         return true;
     }
