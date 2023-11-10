@@ -8,7 +8,7 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1/product")
 @CrossOrigin
-public class userControllers {
+public class ProductControllers {
 
     @Autowired
     private ProductService productService;
@@ -33,8 +33,8 @@ public class userControllers {
         return productService.deleteProduct(productDTO);
     }
 
-    @GetMapping("/getSingleProduct/{productId}")
-    public ProductDTO getProductByProductId(@PathVariable String  productId){
-        return productService.getProductByProductID(productId);
+    @GetMapping("/getSingleProduct/{id}")
+    public ProductDTO getProductByProductId(@PathVariable int id){
+        return productService.getProductByProductID(id);
     }
 }

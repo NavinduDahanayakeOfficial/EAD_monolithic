@@ -37,8 +37,8 @@ public class ProductService {
 
     //Retrieve user details when id is given
 
-    public ProductDTO getProductByProductID(String productID){
-        Product product =productRepo.getProductByProductID(productID);
+    public ProductDTO getProductByProductID(int itemId){
+        Product product =productRepo.getProductByProductID(itemId);
         return modelMapper.map(product, ProductDTO.class);
     }
 }
