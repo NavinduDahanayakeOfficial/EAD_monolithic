@@ -10,9 +10,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-
 import static com.EAD.EAD_monolithic.entity.Permission.*;
-import static com.EAD.EAD_monolithic.entity.Role.*;
 import static org.springframework.http.HttpMethod.*;
 
 @Configuration
