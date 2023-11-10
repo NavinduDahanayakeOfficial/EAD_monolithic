@@ -1,4 +1,4 @@
-package com.EAD.EAD_monolithic;
+package com.EAD.EAD_monolithic.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,6 +11,6 @@ public class ProductDTO {
     private int itemId;
     private String name;
     private String description;
-    private double price;
+    private double unitPrice;
     private int quantity;
 }

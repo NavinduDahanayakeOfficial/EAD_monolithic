@@ -1,5 +1,8 @@
-package com.EAD.EAD_monolithic;
+package com.EAD.EAD_monolithic.service;
 
+import com.EAD.EAD_monolithic.dto.ProductDTO;
+import com.EAD.EAD_monolithic.entity.Product;
+import com.EAD.EAD_monolithic.repo.ProductRepo;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;

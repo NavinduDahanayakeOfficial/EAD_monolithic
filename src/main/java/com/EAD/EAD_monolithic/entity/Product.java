@@ -1,4 +1,4 @@
-package com.EAD.EAD_monolithic;
+package com.EAD.EAD_monolithic.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -15,6 +15,6 @@ public class Product {
     private int itemId;
     private String name;
     private String description;
-    private double price;
+    private double unitPrice;
     private int quantity;
 }

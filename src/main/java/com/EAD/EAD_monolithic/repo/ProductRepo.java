@@ -1,5 +1,6 @@
-package com.EAD.EAD_monolithic;
+package com.EAD.EAD_monolithic.repo;
 
+import com.EAD.EAD_monolithic.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

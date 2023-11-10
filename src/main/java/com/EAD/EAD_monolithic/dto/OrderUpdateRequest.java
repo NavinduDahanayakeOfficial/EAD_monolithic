@@ -15,5 +15,5 @@ import java.util.List;
 public class OrderUpdateRequest {
     private int userId;
     private boolean isPrepared;
-    private List<OrderItem> orderItems;
+    private List<OrderItemRequest> orderItems;
 }

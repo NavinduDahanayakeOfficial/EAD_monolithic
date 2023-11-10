@@ -1,5 +1,7 @@
-package com.EAD.EAD_monolithic;
+package com.EAD.EAD_monolithic.controller;
 
+import com.EAD.EAD_monolithic.dto.ProductDTO;
+import com.EAD.EAD_monolithic.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
