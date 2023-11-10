@@ -1,7 +1,9 @@
 package com.EAD.EAD_monolithic.controller;
 
 import com.EAD.EAD_monolithic.dto.DeliveryDTO;
-import com.EAD.EAD_monolithic.dto.OrderDTO;
+
+import com.EAD.EAD_monolithic.dto.DeliveryPerson;
+
 import com.EAD.EAD_monolithic.entity.Delivery;
 import com.EAD.EAD_monolithic.service.DeliveryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,8 +37,23 @@ public class DeliveryController {
         return deliveryService.editDelivery(deliveryId, deliveryDTO);
     }
 
+
     @DeleteMapping("/deleteDelevery/{deliveryId}")
+
     public boolean deleteDelivery(@PathVariable int deliveryId){
         return deliveryService.deleteDelivery(deliveryId);
     }
+
+    @GetMapping("/getDeliveryById/{deliveryId}")
+    public Delivery getDeliveryById(@PathVariable int deliveryId){
+        return deliveryService.getDeliveryById(deliveryId);
+    }
+
+    @GetMapping("/getDeliveryPerson")
+    public List<DeliveryPerson> getDeliveryPerson() {
+        return deliveryService.getDeliveryPerson();
+    }
+
+
+
 }

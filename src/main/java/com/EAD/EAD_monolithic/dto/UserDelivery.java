@@ -7,10 +7,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class DeliveryDTO {
+public class UserDelivery {
     private int deliveryId;
     private int orderId;
-//    private User customerId;
-//    private User deliveryPersonID;
-    private String status;
+    private String deliveryStatus;
+    private Double totalPrice;
+    private Boolean isPrepared;
 }

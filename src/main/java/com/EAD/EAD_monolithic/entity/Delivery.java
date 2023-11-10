@@ -13,12 +13,16 @@ import lombok.*;
 public class Delivery {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long deliveryId;
+    private int deliveryId;
     private String status;
 
     @OneToOne (cascade = CascadeType.ALL)
     @JoinColumn(name = "orderId", referencedColumnName = "orderId")
     private Order order;
+
+//    public String getDeliveryStatus() {
+//        return status;
+//    }
 
 //    @ManyToOne
 //    @JoinColumn(name = "customerId", referencedColumnName = "userId")
