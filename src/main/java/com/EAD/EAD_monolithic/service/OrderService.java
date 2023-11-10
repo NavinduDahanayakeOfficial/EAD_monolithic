@@ -45,7 +45,6 @@ public class OrderService {
         return product.getQuantity() >= quantity;
     }
 
-
     public double getProductUnitPrice(int itemId) {
         Product product = productRepo.getProductByProductID(itemId);
         if(product == null){
@@ -171,10 +170,10 @@ public class OrderService {
 
         existingOrder.getOrderItems().removeAll(itemsToRemove);
 
-// Clear existing items before adding updated items
+        // Clear existing items before adding updated items
         existingOrder.getOrderItems().clear();
 
-// Set the updated order items
+        // Set the updated order items
         existingOrder.getOrderItems().addAll(updatedOrderItems);
 
         double totalPrice = 0;
