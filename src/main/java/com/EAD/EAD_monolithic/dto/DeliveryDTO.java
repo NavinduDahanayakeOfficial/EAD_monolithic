@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class DeliveryDTO {
     private long deliveryId;
-    private Order orderId;
+    private int orderId;
 //    private User customerId;
 //    private User deliveryPersonID;
     private String status;

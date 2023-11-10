@@ -20,14 +20,20 @@ public class DeliveryService {
     @Autowired
     private ModelMapper modelMapper;
 
-    public List<DeliveryDTO> getAllDeliveries(){
+    @Autowired
+    private OrderService orderService;
+
+    public List<Delivery> getAllDeliveries(){
         List<Delivery>deliveryList = deliveryRepo.findAll();
-        return modelMapper.map(deliveryList, new TypeToken<List<DeliveryDTO>>(){}.getType());
+        return modelMapper.map(deliveryList, new TypeToken<List<Delivery>>(){}.getType());
     }
 
-    public DeliveryDTO newDelivery(DeliveryDTO deliveryDTO){
+    public Delivery newDelivery(DeliveryDTO deliveryDTO){
+        Delivery delivery = new Delivery();
+        delivery.setDeliveryId(deliveryDTO.getDeliveryId());
+        delivery.setOrder(orderService.getOrderById(deliveryDTO.getOrderId()));
         deliveryRepo.save(modelMapper.map(deliveryDTO, Delivery.class));
-        return deliveryDTO;
+        return delivery;
     }
 
     public DeliveryDTO editDelivery(DeliveryDTO deliveryDTO){
