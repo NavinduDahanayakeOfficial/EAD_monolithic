@@ -38,6 +38,11 @@ public class SecurityConfiguration {
                 .requestMatchers(PUT,"/api/v1/order/**").hasAnyAuthority(ADMIN.name())
                 .requestMatchers(DELETE,"/api/v1/order/**").hasAnyAuthority(ADMIN_DELETE.name())
 
+                .requestMatchers("api/v1/product/**").hasAnyRole(ADMIN.name(), CUSTOMER.name(), DELIVERY_PERSON.name(), INVENTORY_KEEPER.name())
+                .requestMatchers(GET,"/api/v1/product/**").hasAnyAuthority(ADMIN.name(), CUSTOMER.name(), DELIVERY_PERSON.name(), INVENTORY_KEEPER.name())
+                .requestMatchers(POST,"/api/v1/product/**").hasAnyAuthority(ADMIN.name(), INVENTORY_KEEPER.name())
+                .requestMatchers(PUT,"/api/v1/product/**").hasAnyAuthority(ADMIN.name())
+                .requestMatchers(DELETE,"/api/v1/product/**").hasAnyAuthority(ADMIN_DELETE.name())
 
                 .anyRequest()
                 .authenticated()
