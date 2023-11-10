@@ -1,6 +1,7 @@
 package com.EAD.EAD_monolithic.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -25,6 +26,7 @@ public class User implements UserDetails {
     private String lastName;
     private String email;
     private String password;
+    private String deliveryAddress;
     @Enumerated(EnumType.STRING)
     private Role role;
 
@@ -42,6 +44,7 @@ public class User implements UserDetails {
     public String getUsername() {
         return email;
     }
+
 
     @Override
     public boolean isAccountNonExpired() {
@@ -63,8 +66,8 @@ public class User implements UserDetails {
         return true;
     }
 
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    @JsonIgnore
-//    private List<Order> orders;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<Order> orders;
 
 }
