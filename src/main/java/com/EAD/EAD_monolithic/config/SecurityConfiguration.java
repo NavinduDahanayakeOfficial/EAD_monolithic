@@ -33,8 +33,8 @@ public class SecurityConfiguration {
 
 
                 .requestMatchers("/api/v1/order/**").hasAnyRole(ADMIN.name(), CUSTOMER.name(), DELIVERY_PERSON.name(), INVENTORY_KEEPER.name())
-                .requestMatchers(GET,"/api/v1/order/**").hasAnyAuthority(ADMIN.name(), CUSTOMER.name(), DELIVERY_PERSON.name(), INVENTORY_KEEPER.name())
-                .requestMatchers(POST,"/api/v1/order/**").hasAnyAuthority(ADMIN.name(), CUSTOMER.name())
+                .requestMatchers(GET,"/api/v1/order/**").hasAnyAuthority(ADMIN_READ.name(), CUSTOMER_READ.name(), DELIVERY_PERSON_READ.name(), INVENTORY_KEEPER_READ.name())
+                .requestMatchers(POST,"/api/v1/order/**").hasAnyAuthority(ADMIN_CREATE.name(), CUSTOMER_CREATE.name())
                 .requestMatchers(PUT,"/api/v1/order/**").hasAnyAuthority(ADMIN.name())
                 .requestMatchers(DELETE,"/api/v1/order/**").hasAnyAuthority(ADMIN_DELETE.name())
 
