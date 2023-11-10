@@ -35,7 +35,7 @@ public class DeliveryController {
         return deliveryService.editDelivery(deliveryId, deliveryDTO);
     }
 
-    @DeleteMapping("/{deliveryId}")
+    @DeleteMapping("/deleteDelevery/{deliveryId}")
     public boolean deleteDelivery(@PathVariable int deliveryId){
         return deliveryService.deleteDelivery(deliveryId);
     }

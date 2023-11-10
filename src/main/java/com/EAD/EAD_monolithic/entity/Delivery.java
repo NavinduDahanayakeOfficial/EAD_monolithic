@@ -16,7 +16,7 @@ public class Delivery {
     private long deliveryId;
     private String status;
 
-    @OneToOne
+    @OneToOne (cascade = CascadeType.ALL)
     @JoinColumn(name = "orderId", referencedColumnName = "orderId")
     private Order order;
 

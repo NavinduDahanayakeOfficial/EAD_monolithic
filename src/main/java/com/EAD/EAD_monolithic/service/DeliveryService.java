@@ -51,7 +51,8 @@ public class DeliveryService {
         Delivery delivery = getDeliveryById(deliveryId);
         //delivery.setDeliveryId(deliveryDTO.getDeliveryId());
         delivery.setOrder(orderService.getOrderById(deliveryDTO.getOrderId()));
-        deliveryRepo.save(modelMapper.map(deliveryDTO, Delivery.class));
+        delivery.setStatus(deliveryDTO.getStatus());
+        deliveryRepo.save(delivery);
         return delivery;
     }
 
