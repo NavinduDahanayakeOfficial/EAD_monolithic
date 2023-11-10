@@ -7,10 +7,12 @@ import com.EAD.EAD_monolithic.Exception.ProductNotFoundException;
 import com.EAD.EAD_monolithic.dto.OrderDTO;
 import com.EAD.EAD_monolithic.dto.OrderItemRequest;
 import com.EAD.EAD_monolithic.dto.OrderRequest;
-import com.EAD.EAD_monolithic.dto.OrderUpdateRequest;
+import com.EAD.EAD_monolithic.dto.UserDelivery;
+import com.EAD.EAD_monolithic.entity.Delivery;
 import com.EAD.EAD_monolithic.entity.Order;
 import com.EAD.EAD_monolithic.entity.OrderItem;
 import com.EAD.EAD_monolithic.entity.Product;
+import com.EAD.EAD_monolithic.repo.DeliveryRepo;
 import com.EAD.EAD_monolithic.repo.OrderItemRepo;
 import com.EAD.EAD_monolithic.repo.OrderRepo;
 import com.EAD.EAD_monolithic.repo.ProductRepo;
@@ -33,6 +35,9 @@ public class OrderService {
 
     @Autowired
     private ProductRepo productRepo;
+
+    @Autowired
+    private DeliveryRepo deliveryRepo;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -198,6 +203,23 @@ public class OrderService {
         }
         orderRepo.deleteById(id);
         return "order deleted with id " + id;
+    }
+
+    public List<UserDelivery> getAllUserDelivery() {
+        List<Order> orderList = orderRepo.findAll();
+        List<UserDelivery> userDeliveryList = new ArrayList<>();
+        for (Order order : orderList) {
+            Delivery delivery = deliveryRepo.findByOrder(order);
+            UserDelivery userDelivery = new UserDelivery();
+            userDelivery.setDeliveryId(delivery.getDeliveryId());
+            userDelivery.setOrderId(order.getOrderId());
+            userDelivery.setDeliveryStatus(delivery.getStatus());
+            userDelivery.setTotalPrice(order.getTotalPrice());
+            userDelivery.setIsPrepared(order.getIsPrepared());
+
+            userDeliveryList.add(userDelivery);
+        }
+        return userDeliveryList;
     }
 }
 
