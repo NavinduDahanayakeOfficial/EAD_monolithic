@@ -2,6 +2,7 @@ package com.EAD.EAD_monolithic.controller;
 
 import com.EAD.EAD_monolithic.dto.OrderDTO;
 import com.EAD.EAD_monolithic.dto.OrderRequest;
+import com.EAD.EAD_monolithic.dto.OrderUpdateRequest;
 import com.EAD.EAD_monolithic.entity.Order;
 import com.EAD.EAD_monolithic.service.OrderService;
 import org.modelmapper.ModelMapper;
@@ -37,10 +38,11 @@ public class OrderController {
         return modelMapper.map(orderService.getOrderById(id), OrderDTO.class);
     }
 
-/*    @PutMapping("/updateOrder/{id}")
-    public Order updateOrder(@RequestBody OrderRequest orderRequest, @PathVariable int id){
-        return orderService.updateOrder(orderDTO,id);
-    }*/
+    @PutMapping("/updateOrder/{id}")
+    public OrderDTO updateOrder(@RequestBody OrderUpdateRequest orderUpdateRequest, @PathVariable int id) {
+        Order order = orderService.updateOrder(orderUpdateRequest, id);
+        return modelMapper.map(order, OrderDTO.class);
+    }
 
     @DeleteMapping("/deleteOrder/{id}")
     public String deleteOrder(@PathVariable int id){

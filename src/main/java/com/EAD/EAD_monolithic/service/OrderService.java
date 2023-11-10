@@ -65,33 +65,36 @@ public class OrderService {
     }
 
 
-    public Order getOrderById(int id) {
-        Order order = orderRepo.findById(id).orElse(null);
-        if (order == null) {
-            throw new OrderNotFoundException("Order not found with id " + id);
+    public Order getOrderById(OrderUpdateRequest orderUpdateRequest, int id) {
+        Order exisitingOrder = orderRepo.findById(id).orElseThrow(() -> new OrderNotFoundException("Order not found with id " + id));
+
+        exisitingOrder.setUserId(orderUpdateRequest.getUserId());
+        exisitingOrder.setIsPrepared(orderUpdateRequest.isPrepared());
+
+        List<OrderItem> updatedOrderItems = new ArrayList<>();
+        for(OrderItem orderItemRequest : orderUpdateRequest.getOrderItems()){
+            OrderItem existingOrderItem = exisitingOrder.getOrderItems().stream()
+                    .filter(orderItem -> orderItem.getItemId() == orderItemRequest.getItemId())
+                    .findFirst()
+                    .orElseThrow(() -> new OrderNotFoundException("Order item not found with id " + orderItemRequest.getItemId()));
+
+            updatedOrderItems.add(existingOrderItem);
         }
-        return order;
+
+        exisitingOrder.setOrderItems(updatedOrderItems);
+
+        double totalPrice = updatedOrderItems.stream()
+                .mapToDouble(orderItem -> orderItem.getTotalUnitPrice())
+                .sum();
+
+        return orderRepo.save(exisitingOrder);
     }
 
-/*    public Order updateOrder(OrderUpdateRequest orderUpdateRequest, int id){
-        Order order = orderRepo.findById(id).orElse(null);
-        if (order == null) {
-            throw new OrderNotFoundException("Order not found with id " + id);
-        }
-
-        order.setUserId(orderUpdateRequest.getUserId());
-        order.setIsPrepared(orderUpdateRequest.isPrepared());
 
 
-
-        return orderRepo.save(modelMapper.map(orderDTO, Order.class));
-    }*/
 
     public String deleteOrder(int id){
-        Order order = orderRepo.findById(id).orElse(null);
-        if (order == null) {
-            throw new OrderNotFoundException("Order not found with id " + id);
-        }
+        Order order = orderRepo.findById(id).orElseThrow(() -> new OrderNotFoundException("Order not found with id " + id));
         orderRepo.deleteById(id);
         return "order deleted with id " + id;
     }
