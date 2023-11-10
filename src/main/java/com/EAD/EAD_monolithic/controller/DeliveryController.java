@@ -31,7 +31,15 @@ public class DeliveryController {
     }
 
     @DeleteMapping("/{deliveryId}")
-    public boolean deleteDelivery(@PathVariable long deliveryId){
+    public boolean deleteDelivery(@PathVariable int deliveryId){
         return deliveryService.deleteDelivery(deliveryId);
     }
+
+    @GetMapping("/getDeliveryById/{id}")
+    public Delivery getDeliveryById(@PathVariable int id){
+        return deliveryService.getDeliveryById(id);
+    }
+
+
+
 }

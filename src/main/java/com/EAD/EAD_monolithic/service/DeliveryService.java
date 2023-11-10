@@ -1,5 +1,6 @@
 package com.EAD.EAD_monolithic.service;
 
+import com.EAD.EAD_monolithic.Exception.OrderNotFoundException;
 import com.EAD.EAD_monolithic.dto.DeliveryDTO;
 import com.EAD.EAD_monolithic.entity.Delivery;
 import com.EAD.EAD_monolithic.repo.DeliveryRepo;
@@ -41,8 +42,16 @@ public class DeliveryService {
         return deliveryDTO;
     }
 
-    public boolean deleteDelivery(long deliveryId){
+    public boolean deleteDelivery(int deliveryId){
         deliveryRepo.deleteById(deliveryId);
         return true;
+    }
+
+    public Delivery getDeliveryById (int id) {
+        Delivery delivery = deliveryRepo.findById(id).orElse(null);
+        if (delivery == null) {
+            throw new OrderNotFoundException("Order not found with id " + id);
+        }
+        return delivery;
     }
 }
