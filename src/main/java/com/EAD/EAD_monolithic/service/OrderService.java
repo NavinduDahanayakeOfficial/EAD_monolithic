@@ -8,11 +8,10 @@ import com.EAD.EAD_monolithic.dto.*;
 import com.EAD.EAD_monolithic.entity.Delivery;
 import com.EAD.EAD_monolithic.entity.Order;
 import com.EAD.EAD_monolithic.entity.OrderItem;
-import com.EAD.EAD_monolithic.entity.Product;
+import com.EAD.EAD_monolithic.entity.Inventory;
 import com.EAD.EAD_monolithic.repo.DeliveryRepo;
-import com.EAD.EAD_monolithic.repo.OrderItemRepo;
 import com.EAD.EAD_monolithic.repo.OrderRepo;
-import com.EAD.EAD_monolithic.repo.ProductRepo;
+import com.EAD.EAD_monolithic.repo.InventoryRepo;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -31,7 +30,7 @@ public class OrderService {
     private OrderRepo orderRepo;
 
     @Autowired
-    private ProductRepo productRepo;
+    private InventoryRepo inventoryRepo;
 
     @Autowired
     private DeliveryRepo deliveryRepo;
@@ -40,19 +39,19 @@ public class OrderService {
     private ModelMapper modelMapper;
 
     public boolean checkProductQuantity(int itemId, int quantity) {
-        Product product = productRepo.getProductByProductID(itemId);
-        if(product == null){
+        Inventory inventory = inventoryRepo.getProductByProductID(itemId);
+        if(inventory == null){
             throw new ProductNotFoundException("Product not found with id " + itemId);
         }
-        return product.getQuantity() >= quantity;
+        return inventory.getQuantity() >= quantity;
     }
 
     public double getProductUnitPrice(int itemId) {
-        Product product = productRepo.getProductByProductID(itemId);
-        if(product == null){
+        Inventory inventory = inventoryRepo.getProductByProductID(itemId);
+        if(inventory == null){
             throw new ProductNotFoundException("Product not found with id " + itemId);
         }
-        return product.getUnitPrice();
+        return inventory.getUnitPrice();
     }
 
     public Order saveOrder(OrderRequest orderRequest) {
@@ -66,9 +65,9 @@ public class OrderService {
 
         //Reduce the quantity of each product in the database
         for (OrderItemRequest orderItemRequest : orderRequest.getOrderItems()) {
-            Product product = productRepo.getProductByProductID(orderItemRequest.getItemId());
-            product.setQuantity(product.getQuantity() - orderItemRequest.getQuantity());
-            productRepo.save(product);
+            Inventory inventory = inventoryRepo.getProductByProductID(orderItemRequest.getItemId());
+            inventory.setQuantity(inventory.getQuantity() - orderItemRequest.getQuantity());
+            inventoryRepo.save(inventory);
         }
 
         Order newOrder = new Order();
@@ -155,9 +154,9 @@ public class OrderService {
                 updatedOrderItems.add(existingOrderItem);
 
                 // Update the product quantity in the database
-                Product product = productRepo.getProductByProductID(orderItemRequest.getItemId());
-                product.setQuantity(product.getQuantity() + existingOrderItem.getQuantity() - orderItemRequest.getQuantity());
-                productRepo.save(product);
+                Inventory inventory = inventoryRepo.getProductByProductID(orderItemRequest.getItemId());
+                inventory.setQuantity(inventory.getQuantity() + existingOrderItem.getQuantity() - orderItemRequest.getQuantity());
+                inventoryRepo.save(inventory);
             } else {
                 throw new ProductNotFoundException("Product not found with id " + orderItemRequest.getItemId());
             }

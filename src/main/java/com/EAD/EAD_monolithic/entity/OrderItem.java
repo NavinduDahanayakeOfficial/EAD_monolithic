@@ -30,8 +30,10 @@ public class OrderItem {
     @JsonIgnore
     private Order order;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "item_id")
     @Column(name = "item_id", nullable = false)
-    private int itemId;
+    private Inventory inventory;
 
     @Column(name = "quantity", nullable = false)
     private int quantity;
