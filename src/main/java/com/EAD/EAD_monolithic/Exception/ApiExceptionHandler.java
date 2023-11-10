@@ -10,7 +10,7 @@ import java.time.ZonedDateTime;
 @ControllerAdvice
 public class ApiExceptionHandler {
 
-    @ExceptionHandler(value = {OrderNotFoundException.class, InsufficientProductQuantityException.class, ProductNotFoundException.class})
+    @ExceptionHandler(value = {OrderNotFoundException.class, InsufficientItemQuantityException.class, InventoryItemNotFoundException.class, UserNotFoundException.class})
     public ResponseEntity<Object> handleNotFoundException(RuntimeException e) {
 
         // 1. Create payload containing exception details

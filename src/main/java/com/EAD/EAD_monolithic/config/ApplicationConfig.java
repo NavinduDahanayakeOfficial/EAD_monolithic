@@ -1,6 +1,6 @@
 package com.EAD.EAD_monolithic.config;
 
-import com.EAD.EAD_monolithic.repo.UserRepository;
+import com.EAD.EAD_monolithic.repo.UserRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,11 +17,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @RequiredArgsConstructor
 public class ApplicationConfig {
 
-    private final UserRepository userRepository;
+    private final UserRepo userRepo;
 
     @Bean
     public UserDetailsService userDetailsService(){
-        return username -> userRepository.findByEmail(username)
+        return username -> userRepo.findByEmail(username)
                 .orElseThrow(()->new UsernameNotFoundException("User not found"));
     }
 

@@ -1,27 +1,22 @@
 package com.EAD.EAD_monolithic.service;
 
 
-import com.EAD.EAD_monolithic.Exception.InsufficientProductQuantityException;
-import com.EAD.EAD_monolithic.Exception.OrderNotFoundException;
-import com.EAD.EAD_monolithic.Exception.ProductNotFoundException;
+import com.EAD.EAD_monolithic.Exception.InsufficientItemQuantityException;
+import com.EAD.EAD_monolithic.Exception.InventoryItemNotFoundException;
+import com.EAD.EAD_monolithic.Exception.UserNotFoundException;
 import com.EAD.EAD_monolithic.dto.*;
-import com.EAD.EAD_monolithic.entity.Delivery;
-import com.EAD.EAD_monolithic.entity.Order;
-import com.EAD.EAD_monolithic.entity.OrderItem;
-import com.EAD.EAD_monolithic.entity.Inventory;
+import com.EAD.EAD_monolithic.entity.*;
 import com.EAD.EAD_monolithic.repo.DeliveryRepo;
 import com.EAD.EAD_monolithic.repo.OrderRepo;
 import com.EAD.EAD_monolithic.repo.InventoryRepo;
+import com.EAD.EAD_monolithic.repo.UserRepo;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -33,12 +28,80 @@ public class OrderService {
     private InventoryRepo inventoryRepo;
 
     @Autowired
+    private UserRepo userRepo;
+
+    @Autowired
     private DeliveryRepo deliveryRepo;
 
     @Autowired
     private ModelMapper modelMapper;
 
-    public boolean checkProductQuantity(int itemId, int quantity) {
+    public void saveOrder(OrderRequest orderRequest) {
+        User user = userRepo.findById(orderRequest.getUserId())
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+
+        // Check if there are enough items in the Inventory for each OrderItem
+        if (!hasEnoughItems(orderRequest.getOrderItems())) {
+            throw new InsufficientItemQuantityException("Not enough items in inventory for the order");
+        }
+
+        Order order = new Order();
+        order.setUser(user);
+        order.setTotalPrice(calculateTotalPrice(orderRequest.getOrderItems()));
+        order.setIsPrepared(false);
+
+        List<OrderItem> orderItems = new ArrayList<>();
+
+        for (OrderItemRequest orderItemRequest : orderRequest.getOrderItems()) {
+            Inventory inventory = inventoryRepo.findById(orderItemRequest.getItemId())
+                    .orElseThrow(() -> new InventoryItemNotFoundException("Inventory item not found"));
+
+/*
+            // Check if there are enough items in the Inventory for the OrderItem
+            if (inventory.getQuantity() < orderItemRequest.getQuantity()) {
+                throw new RuntimeException("Not enough items in inventory for the order item");
+            }
+*/
+
+            OrderItem orderItem = new OrderItem();
+            orderItem.setInventory(inventory);
+            orderItem.setQuantity(orderItemRequest.getQuantity());
+            orderItem.setUnitPrice(inventory.getUnitPrice());
+            orderItem.setTotalUnitPrice(orderItem.getUnitPrice() * orderItem.getQuantity());
+
+            orderItems.add(orderItem);
+        }
+
+        order.setOrderItems(orderItems);
+
+        // Update the inventory quantities
+        updateInventoryQuantities(orderItems);
+
+        orderRepo.save(order);
+    }
+
+    private boolean hasEnoughItems(List<OrderItemRequest> orderItemRequests) {
+        for (OrderItemRequest orderItemRequest : orderItemRequests) {
+            Inventory inventory = inventoryRepo.findById(orderItemRequest.getItemId())
+                    .orElseThrow(() -> new InventoryItemNotFoundException("Inventory item not found"));
+            if (inventory.getQuantity() < orderItemRequest.getQuantity()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void updateInventoryQuantities(List<OrderItem> orderItems) {
+        for (OrderItem orderItem : orderItems) {
+            Inventory inventory = orderItem.getInventory();
+            int newQuantity = inventory.getQuantity() - orderItem.getQuantity();
+            inventory.setQuantity(newQuantity);
+            inventoryRepository.save(inventory);
+        }
+    }
+
+
+    /*public boolean checkProductQuantity(int itemId, int quantity) {
         Inventory inventory = inventoryRepo.getProductByProductID(itemId);
         if(inventory == null){
             throw new ProductNotFoundException("Product not found with id " + itemId);
@@ -216,6 +279,6 @@ public class OrderService {
             userDeliveryList.add(userDelivery);
         }
         return userDeliveryList;
-    }
+    }*/
 }
 
