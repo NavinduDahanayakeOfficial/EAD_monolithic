@@ -44,10 +44,10 @@ public class DeliveryController {
         return deliveryService.deleteDelivery(deliveryId);
     }
 
-    @GetMapping("/getDeliveryById/{deliveryId}")
-    public Delivery getDeliveryById(@PathVariable int deliveryId){
-        return deliveryService.getDeliveryById(deliveryId);
-    }
+//    @GetMapping("/getDeliveryById/{deliveryId}")
+//    public Delivery getDeliveryById(@PathVariable int deliveryId){
+//        return deliveryService.getDeliveryById(deliveryId);
+//    }
 
     @GetMapping("/getDeliveryPerson")
     public List<DeliveryPerson> getDeliveryPerson() {

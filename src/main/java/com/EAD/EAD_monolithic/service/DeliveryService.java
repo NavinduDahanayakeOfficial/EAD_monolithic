@@ -68,13 +68,13 @@ public class DeliveryService {
         return true;
     }
 
-    public Delivery getDeliveryById (int id) {
-        Delivery delivery = deliveryRepo.findById(id).orElse(null);
-        if (delivery == null) {
-            throw new OrderNotFoundException("Order not found with id " + id);
-        }
-        return delivery;
-    }
+//    public Delivery getDeliveryById (int id) {
+//        Delivery delivery = deliveryRepo.findById(id).orElse(null);
+//        if (delivery == null) {
+//            throw new OrderNotFoundException("Order not found with id " + id);
+//        }
+//        return delivery;
+//    }
 
     public List<DeliveryPerson> getDeliveryPerson() {
         List<Order> orderList = orderRepo.findAll();
