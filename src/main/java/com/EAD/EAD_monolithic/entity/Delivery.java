@@ -20,9 +20,9 @@ public class Delivery {
     @JoinColumn(name = "orderId", referencedColumnName = "orderId")
     private Order order;
 
-    public String getDeliveryStatus() {
-        return status;
-    }
+//    public String getDeliveryStatus() {
+//        return status;
+//    }
 
 //    @ManyToOne
 //    @JoinColumn(name = "customerId", referencedColumnName = "userId")

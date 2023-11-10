@@ -109,7 +109,7 @@ public class OrderService {
             UserDelivery userDelivery = new UserDelivery();
             userDelivery.setDeliveryId(delivery.getDeliveryId());
             userDelivery.setOrderId(order.getOrderId());
-            userDelivery.setDeliveryStatus(delivery.getDeliveryStatus());
+            userDelivery.setDeliveryStatus(delivery.getStatus());
             userDelivery.setTotalPrice(order.getTotalPrice());
             userDelivery.setIsPrepared(order.getIsPrepared());
 
