@@ -1,22 +1,21 @@
 package com.EAD.EAD_monolithic.service;
 
 
-import com.EAD.EAD_monolithic.Exception.InsufficientItemQuantityException;
-import com.EAD.EAD_monolithic.Exception.InventoryItemNotFoundException;
-import com.EAD.EAD_monolithic.Exception.UserNotFoundException;
+import com.EAD.EAD_monolithic.Exception.*;
 import com.EAD.EAD_monolithic.dto.*;
 import com.EAD.EAD_monolithic.entity.*;
-import com.EAD.EAD_monolithic.repo.DeliveryRepo;
-import com.EAD.EAD_monolithic.repo.OrderRepo;
-import com.EAD.EAD_monolithic.repo.InventoryRepo;
-import com.EAD.EAD_monolithic.repo.UserRepo;
+import com.EAD.EAD_monolithic.repo.*;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -28,6 +27,9 @@ public class OrderService {
     private InventoryRepo inventoryRepo;
 
     @Autowired
+    private OrderItemRepo orderItemRepo;
+
+    @Autowired
     private UserRepo userRepo;
 
     @Autowired
@@ -36,9 +38,9 @@ public class OrderService {
     @Autowired
     private ModelMapper modelMapper;
 
-    public void saveOrder(OrderRequest orderRequest) {
+    public Order saveOrder(OrderRequest orderRequest) {
         User user = userRepo.findById(orderRequest.getUserId())
-                .orElseThrow(() -> new UserNotFoundException("User not found"));
+                .orElseThrow(() -> new NotFoundException("User not found"));
 
         // Check if there are enough items in the Inventory for each OrderItem
         if (!hasEnoughItems(orderRequest.getOrderItems())) {
@@ -47,14 +49,14 @@ public class OrderService {
 
         Order order = new Order();
         order.setUser(user);
-        order.setTotalPrice(calculateTotalPrice(orderRequest.getOrderItems()));
+
         order.setIsPrepared(false);
 
         List<OrderItem> orderItems = new ArrayList<>();
 
         for (OrderItemRequest orderItemRequest : orderRequest.getOrderItems()) {
             Inventory inventory = inventoryRepo.findById(orderItemRequest.getItemId())
-                    .orElseThrow(() -> new InventoryItemNotFoundException("Inventory item not found"));
+                    .orElseThrow(() -> new NotFoundException("Inventory item not found"));
 
 /*
             // Check if there are enough items in the Inventory for the OrderItem
@@ -62,8 +64,8 @@ public class OrderService {
                 throw new RuntimeException("Not enough items in inventory for the order item");
             }
 */
-
             OrderItem orderItem = new OrderItem();
+            orderItem.setOrder(order);
             orderItem.setInventory(inventory);
             orderItem.setQuantity(orderItemRequest.getQuantity());
             orderItem.setUnitPrice(inventory.getUnitPrice());
@@ -74,16 +76,19 @@ public class OrderService {
 
         order.setOrderItems(orderItems);
 
+        double totalPrice = calculateTotalPrice(orderItems);
+        order.setTotalPrice(totalPrice);
+
         // Update the inventory quantities
         updateInventoryQuantities(orderItems);
 
-        orderRepo.save(order);
+        return orderRepo.save(order);
     }
 
     private boolean hasEnoughItems(List<OrderItemRequest> orderItemRequests) {
         for (OrderItemRequest orderItemRequest : orderItemRequests) {
             Inventory inventory = inventoryRepo.findById(orderItemRequest.getItemId())
-                    .orElseThrow(() -> new InventoryItemNotFoundException("Inventory item not found"));
+                    .orElseThrow(() -> new NotFoundException("Inventory item not found"));
             if (inventory.getQuantity() < orderItemRequest.getQuantity()) {
                 return false;
             }
@@ -96,9 +101,86 @@ public class OrderService {
             Inventory inventory = orderItem.getInventory();
             int newQuantity = inventory.getQuantity() - orderItem.getQuantity();
             inventory.setQuantity(newQuantity);
-            inventoryRepository.save(inventory);
+            inventoryRepo.save(inventory);
         }
     }
+
+    public List<OrderDTO> getAllOrders() {
+        List<Order> orderList = orderRepo.findAll();
+        return modelMapper.map(orderList, new TypeToken<List<OrderDTO>>() {
+        }.getType());
+    }
+
+    public Order getOrderById(int id) {
+        Order order = orderRepo.findById(id).orElse(null);
+        if (order == null) {
+            throw new NotFoundException("Order not found with id " + id);
+        }
+        return order;
+    }
+
+    public Order updateOrder(OrderUpdateRequest orderUpdateRequest, int orderId) {
+        Order existingOrder = orderRepo.findById(orderId)
+                .orElseThrow(() -> new NotFoundException("Order not found"));
+
+        existingOrder.setIsPrepared(orderUpdateRequest.isPrepared());
+
+        // Create a map to store updated quantities for each item
+        Map<Integer, Integer> updatedQuantities = new HashMap<>();
+
+        // Update quantities in the Order and Inventory tables
+        for (OrderItemRequest orderItemRequest : orderUpdateRequest.getOrderItems()) {
+            int itemId = orderItemRequest.getItemId();
+            int newQuantity = orderItemRequest.getQuantity();
+
+            // Find the existing order item by item ID
+            OrderItem existingOrderItem = existingOrder.getOrderItems().stream()
+                    .filter(item -> item.getInventory().getItemId() == itemId)
+                    .findFirst()
+                    .orElseThrow(() -> new NotFoundException("Order item not found"));
+
+            // Update quantity in the OrderItem
+            existingOrderItem.setQuantity(newQuantity);
+
+            // Store updated quantity in the map
+            updatedQuantities.put(itemId, newQuantity);
+        }
+
+        // Update quantities in the Inventory table
+        for (OrderItem orderItem : existingOrder.getOrderItems()) {
+            int itemId = orderItem.getInventory().getItemId();
+            int updatedQuantity = updatedQuantities.getOrDefault(itemId, orderItem.getQuantity());
+
+            // Update quantity in the Inventory
+            Inventory inventory = orderItem.getInventory();
+            inventory.setQuantity(inventory.getQuantity() - orderItem.getQuantity() + updatedQuantity);
+        }
+
+        // Recalculate total price
+        double totalPrice = calculateTotalPrice(existingOrder.getOrderItems());
+        existingOrder.setTotalPrice(totalPrice);
+
+        // Persist changes to the Order and Inventory tables
+        orderRepo.save(existingOrder);
+
+        return existingOrder;
+    }
+
+    private double calculateTotalPrice(List<OrderItem> orderItems) {
+        return orderItems.stream()
+                .mapToDouble(OrderItem::getTotalUnitPrice)
+                .sum();
+    }
+
+    public String deleteOrder(int id){
+        Order order = orderRepo.findById(id).orElse(null);
+        if (order == null) {
+            throw new NotFoundException("Order not found with id " + id);
+        }
+        orderRepo.deleteById(id);
+        return "order deleted with id " + id;
+    }
+}
 
 
     /*public boolean checkProductQuantity(int itemId, int quantity) {
@@ -173,20 +255,9 @@ public class OrderService {
 
 
 
-    public List<OrderDTO> getAllOrders() {
-        List<Order> orderList = orderRepo.findAll();
-        return modelMapper.map(orderList, new TypeToken<List<OrderDTO>>() {
-        }.getType());
-    }
 
 
-    public Order getOrderById(int id) {
-        Order order = orderRepo.findById(id).orElse(null);
-        if (order == null) {
-            throw new OrderNotFoundException("Order not found with id " + id);
-        }
-        return order;
-    }
+
 
     public Order updateOrder(OrderUpdateRequest orderUpdateRequest, int id) {
         Order existingOrder = orderRepo.findById(id)
@@ -280,5 +351,5 @@ public class OrderService {
         }
         return userDeliveryList;
     }*/
-}
+
 

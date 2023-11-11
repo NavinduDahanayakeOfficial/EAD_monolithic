@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,4 +17,10 @@ public class OrderUpdateRequest {
     private int userId;
     private boolean isPrepared;
     private List<OrderItemRequest> orderItems;
+
+    public List<Integer> getOrderItemIds() {
+        return orderItems.stream()
+                .map(orderItemRequest -> orderItemRequest.getItemId())
+                .collect(Collectors.toList());
+    }
 }

@@ -50,11 +50,11 @@ public class OrderController {
     public String deleteOrder(@PathVariable int id){
         return orderService.deleteOrder(id);
     }
-
+/*
     @GetMapping("/getAllUserDelivery")
     public List<UserDelivery> getAllUserDelivery() {
         return orderService.getAllUserDelivery();
-    }
+    }*/
 
 
 }

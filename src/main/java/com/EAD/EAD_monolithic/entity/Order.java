@@ -2,6 +2,7 @@ package com.EAD.EAD_monolithic.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -38,6 +39,8 @@ public class Order {
     @Column(name = "is_prepared", nullable = false)
     private Boolean isPrepared;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonManagedReference
+    @OrderColumn(name = "order_index")
     private List<OrderItem> orderItems;
 }

@@ -1,6 +1,6 @@
 package com.EAD.EAD_monolithic.service;
 
-import com.EAD.EAD_monolithic.Exception.OrderNotFoundException;
+import com.EAD.EAD_monolithic.Exception.NotFoundException;
 import com.EAD.EAD_monolithic.dto.DeliveryDTO;
 import com.EAD.EAD_monolithic.dto.DeliveryPerson;
 import com.EAD.EAD_monolithic.entity.Delivery;
@@ -48,7 +48,7 @@ public class DeliveryService {
     public Delivery getDeliveryById(int deliveryId) {
         Delivery delivery = deliveryRepo.findById(deliveryId).orElse(null);
         if (delivery == null) {
-            throw new OrderNotFoundException("Delivery not found with id " + deliveryId);
+            throw new NotFoundException("Delivery not found with id " + deliveryId);
         }
         return delivery;
     }

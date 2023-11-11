@@ -1,9 +1,7 @@
 package com.EAD.EAD_monolithic.entity;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,5 +23,7 @@ public class Inventory {
     private int quantity;
 
     @OneToMany(mappedBy = "inventory", cascade = CascadeType.ALL, orphanRemoval = true )
+    @JsonManagedReference
+    @OrderColumn(name = "order_index")
     private List<OrderItem> orderItems;
 }

@@ -31,10 +31,11 @@ public class AuthenticationService {
         }
         else{
             var user= User.builder()
-                    .firstName(request.getFirstname())
-                    .lastName(request.getLastname())
+                    .firstName(request.getFirstName())
+                    .lastName(request.getLastName())
                     .email(request.getEmail())
                     .password(passwordEncoder.encode(request.getPassword()))
+                    .deliveryAddress(request.getDeliveryAddress())
                     .role(request.getRole())
                     .build();
             repository.save(user);
