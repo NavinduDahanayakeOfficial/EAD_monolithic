@@ -20,13 +20,13 @@ public class Delivery {
     @JoinColumn(name = "orderId", referencedColumnName = "orderId")
     private Order order;
 
-    @ManyToOne
-    @JoinColumn(name = "customerId", referencedColumnName = "userId")
-    private User customer;
-
-    @ManyToOne
-    @JoinColumn(name = "deliveryPersonId", referencedColumnName = "userId")
-    private User deliveryPerson;
+//    @ManyToOne
+//    @JoinColumn(name = "customerId", referencedColumnName = "userId")
+//    private User customer;
+//
+//    @ManyToOne
+//    @JoinColumn(name = "deliveryPersonId", referencedColumnName = "userId")
+//    private User deliveryPerson;
 
 
 }
