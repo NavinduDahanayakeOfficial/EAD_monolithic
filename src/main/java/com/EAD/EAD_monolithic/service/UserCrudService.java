@@ -29,7 +29,15 @@ public class UserCrudService {
     }
 
 
-    public User getUserById(int userId) {
+    public UserResponseDTO getUserById(int userId) {
+        User user = userRepo.findById(userId).orElse(null);
+        if (user == null) {
+            throw new UserNotFoundException("User not found with id " + userId);
+        }
+        return modelMapper.map(user, UserResponseDTO.class);
+    }
+
+    public User getUserByIdAllDetail(int userId) {
         User user = userRepo.findById(userId).orElse(null);
         if (user == null) {
             throw new UserNotFoundException("User not found with id " + userId);
