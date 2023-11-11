@@ -125,45 +125,38 @@ public class OrderService {
 
         existingOrder.setIsPrepared(orderUpdateRequest.isPrepared());
 
-        // Create a map to store updated quantities for each item
-        Map<Integer, Integer> updatedQuantities = new HashMap<>();
+        // Update order items
+        List<OrderItem> updatedOrderItems = updateOrderItems(orderUpdateRequest.getOrderItems(), existingOrder);
+        existingOrder.setOrderItems(updatedOrderItems);
 
-        // Update quantities in the Order and Inventory tables
-        for (OrderItemRequest orderItemRequest : orderUpdateRequest.getOrderItems()) {
-            int itemId = orderItemRequest.getItemId();
-            int newQuantity = orderItemRequest.getQuantity();
+        // Recalculate total price
+        double totalPrice = calculateTotalPrice(updatedOrderItems);
+        existingOrder.setTotalPrice(totalPrice);
 
+        return orderRepo.save(existingOrder);
+    }
+
+    private List<OrderItem> updateOrderItems(List<OrderItemRequest> orderItemRequests, Order order) {
+        List<OrderItem> updatedOrderItems = new ArrayList<>();
+
+        for (OrderItemRequest orderItemRequest : orderItemRequests) {
             // Find the existing order item by item ID
-            OrderItem existingOrderItem = existingOrder.getOrderItems().stream()
-                    .filter(item -> item.getInventory().getItemId() == itemId)
+            OrderItem existingOrderItem = order.getOrderItems().stream()
+                    .filter(item -> item.getInventory().getItemId() == orderItemRequest.getItemId())
                     .findFirst()
                     .orElseThrow(() -> new NotFoundException("Order item not found"));
 
-            // Update quantity in the OrderItem
-            existingOrderItem.setQuantity(newQuantity);
+            // Update the quantity
+            existingOrderItem.setQuantity(orderItemRequest.getQuantity());
 
-            // Store updated quantity in the map
-            updatedQuantities.put(itemId, newQuantity);
+            // Recalculate total unit price
+            double totalUnitPrice = existingOrderItem.getUnitPrice() * existingOrderItem.getQuantity();
+            existingOrderItem.setTotalUnitPrice(totalUnitPrice);
+
+            updatedOrderItems.add(existingOrderItem);
         }
 
-        // Update quantities in the Inventory table
-        for (OrderItem orderItem : existingOrder.getOrderItems()) {
-            int itemId = orderItem.getInventory().getItemId();
-            int updatedQuantity = updatedQuantities.getOrDefault(itemId, orderItem.getQuantity());
-
-            // Update quantity in the Inventory
-            Inventory inventory = orderItem.getInventory();
-            inventory.setQuantity(inventory.getQuantity() - orderItem.getQuantity() + updatedQuantity);
-        }
-
-        // Recalculate total price
-        double totalPrice = calculateTotalPrice(existingOrder.getOrderItems());
-        existingOrder.setTotalPrice(totalPrice);
-
-        // Persist changes to the Order and Inventory tables
-        orderRepo.save(existingOrder);
-
-        return existingOrder;
+        return updatedOrderItems;
     }
 
     private double calculateTotalPrice(List<OrderItem> orderItems) {

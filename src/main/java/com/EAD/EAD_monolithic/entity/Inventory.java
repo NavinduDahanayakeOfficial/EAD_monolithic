@@ -22,7 +22,7 @@ public class Inventory {
     private double unitPrice;
     private int quantity;
 
-    @OneToMany(mappedBy = "inventory", cascade = CascadeType.ALL, orphanRemoval = true )
+    @OneToMany(mappedBy = "inventory", cascade = CascadeType.ALL )
     @JsonManagedReference
     @OrderColumn(name = "order_index")
     private List<OrderItem> orderItems;

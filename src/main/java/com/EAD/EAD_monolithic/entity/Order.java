@@ -41,6 +41,5 @@ public class Order {
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference
-    @OrderColumn(name = "order_index")
     private List<OrderItem> orderItems;
 }
