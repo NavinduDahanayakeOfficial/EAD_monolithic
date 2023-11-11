@@ -52,7 +52,7 @@ public class OrderController {
         return orderService.deleteOrder(id);
     }
 
-    @PatchMapping("/{orderId}/update-prepared")
+    @PatchMapping("/updateOrderIsPrepared/{orderId}/update-prepared")
     public ResponseEntity<String> updateOrderPreparedStatus(@PathVariable int orderId, @RequestParam boolean isPrepared) {
         orderService.updateOrderPreparedStatus(orderId, isPrepared);
         return ResponseEntity.ok("Order prepared status updated successfully");
