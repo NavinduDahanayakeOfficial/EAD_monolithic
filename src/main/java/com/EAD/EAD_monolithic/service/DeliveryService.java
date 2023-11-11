@@ -8,6 +8,7 @@ import com.EAD.EAD_monolithic.entity.Delivery;
 import com.EAD.EAD_monolithic.entity.Order;
 import com.EAD.EAD_monolithic.repo.DeliveryRepo;
 import com.EAD.EAD_monolithic.repo.OrderRepo;
+import com.EAD.EAD_monolithic.repo.UserRepo;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -22,15 +23,16 @@ import java.util.List;
 public class DeliveryService {
     @Autowired
     private DeliveryRepo deliveryRepo;
-
     @Autowired
     private OrderRepo orderRepo;
-
     @Autowired
     private ModelMapper modelMapper;
-
     @Autowired
     private OrderService orderService;
+    @Autowired
+    private UserCrudService userCrudService;
+    @Autowired
+    private UserRepo userRepo;
 
     public List<Delivery> getAllDeliveries(){
         List<Delivery>deliveryList = deliveryRepo.findAll();
@@ -41,6 +43,8 @@ public class DeliveryService {
         Delivery delivery = new Delivery();
         delivery.setDeliveryId(deliveryDTO.getDeliveryId());
         delivery.setOrder(orderService.getOrderById(deliveryDTO.getOrderId()));
+//        delivery.setCustomer(userCrudService.getUserById(deliveryDTO.getCustomerId()));
+//        delivery.setDeliveryPerson(userCrudService.getUserById(deliveryDTO.getDeliveryPersonId()));
         delivery.setStatus(deliveryDTO.getStatus());
         deliveryRepo.save(delivery);
         return delivery;
@@ -64,9 +68,9 @@ public class DeliveryService {
         return delivery;
     }
 
-    public boolean deleteDelivery(int deliveryId){
+    public String deleteDelivery(int deliveryId){
         deliveryRepo.deleteById(deliveryId);
-        return true;
+        return ("Delivery deleted successfully");
     }
 
 //    public Delivery getDeliveryById (int id) {

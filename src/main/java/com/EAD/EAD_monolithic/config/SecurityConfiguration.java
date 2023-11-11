@@ -46,6 +46,11 @@ public class SecurityConfiguration {
                 .requestMatchers(PUT,"/api/v1/user/**").hasAuthority(ADMIN_UPDATE.getPermission())
                 .requestMatchers(DELETE,"/api/v1/user/**").hasAuthority(ADMIN_UPDATE.getPermission())
 
+                .requestMatchers(GET,"/api/v1/delivery/**").hasAnyAuthority(ADMIN_READ.getPermission(), CUSTOMER_READ.getPermission(), INVENTORY_KEEPER_READ.getPermission(), DELIVERY_PERSON_READ.getPermission())
+                .requestMatchers(POST,"/api/v1/delivery/**").hasAnyAuthority(ADMIN_CREATE.getPermission(), INVENTORY_KEEPER_CREATE.getPermission())
+                .requestMatchers(PATCH,"/api/v1/delivery/**").hasAnyAuthority(ADMIN_UPDATE.getPermission(), INVENTORY_KEEPER_UPDATE.getPermission(), DELIVERY_PERSON_UPDATE.getPermission())
+                .requestMatchers(DELETE,"/api/v1/delivery/**").hasAnyAuthority(ADMIN_DELETE.getPermission(), INVENTORY_KEEPER_DELETE.getPermission())
+
                 .anyRequest()
                 .authenticated()
                 .and()
