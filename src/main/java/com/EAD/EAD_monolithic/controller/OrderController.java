@@ -8,6 +8,7 @@ import com.EAD.EAD_monolithic.entity.Order;
 import com.EAD.EAD_monolithic.service.OrderService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -50,11 +51,11 @@ public class OrderController {
     public String deleteOrder(@PathVariable int id){
         return orderService.deleteOrder(id);
     }
-/*
-    @GetMapping("/getAllUserDelivery")
-    public List<UserDelivery> getAllUserDelivery() {
-        return orderService.getAllUserDelivery();
-    }*/
 
+    @PatchMapping("/{orderId}/update-prepared")
+    public ResponseEntity<String> updateOrderPreparedStatus(@PathVariable int orderId, @RequestParam boolean isPrepared) {
+        orderService.updateOrderPreparedStatus(orderId, isPrepared);
+        return ResponseEntity.ok("Order prepared status updated successfully");
+    }
 
 }

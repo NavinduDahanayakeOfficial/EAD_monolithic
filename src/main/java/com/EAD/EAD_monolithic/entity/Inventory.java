@@ -24,6 +24,5 @@ public class Inventory {
 
     @OneToMany(mappedBy = "inventory", cascade = CascadeType.ALL )
     @JsonManagedReference
-    @OrderColumn(name = "order_index")
     private List<OrderItem> orderItems;
 }

@@ -31,15 +31,16 @@ public class SecurityConfiguration {
                 .requestMatchers("/api/v1/auth/**")
                 .permitAll()
 
-                .requestMatchers(GET,"/api/v1/order/**").hasAnyAuthority(ADMIN_READ.getPermission(), CUSTOMER_READ.getPermission(), DELIVERY_PERSON_READ.getPermission())
+                .requestMatchers(GET,"/api/v1/order/**").hasAnyAuthority(ADMIN_READ.getPermission(), CUSTOMER_READ.getPermission(), DELIVERY_PERSON_READ.getPermission(),INVENTORY_KEEPER_READ.getPermission())
                 .requestMatchers(POST,"/api/v1/order/**").hasAnyAuthority(ADMIN_CREATE.getPermission(), CUSTOMER_CREATE.getPermission())
-                .requestMatchers(PUT,"/api/v1/order/**").hasAnyAuthority(ADMIN_UPDATE.getPermission())
-                .requestMatchers(DELETE,"/api/v1/order/**").hasAnyAuthority(ADMIN_DELETE.getPermission())
+                .requestMatchers(PUT,"/api/v1/order/**").hasAuthority(ADMIN_UPDATE.getPermission())
+                .requestMatchers(DELETE,"/api/v1/order/**").hasAuthority(ADMIN_DELETE.getPermission())
+                .requestMatchers(PATCH,"/api/v1/order/**").hasAnyAuthority(ADMIN_UPDATE.getPermission(), INVENTORY_KEEPER_READ.getPermission())
 
-                .requestMatchers(GET,"/api/v1/product/**").hasAnyAuthority(ADMIN_READ.getPermission(), CUSTOMER_READ.getPermission(), DELIVERY_PERSON_READ.getPermission())
+                .requestMatchers(GET,"/api/v1/product/**").hasAnyAuthority(ADMIN_READ.getPermission(), CUSTOMER_READ.getPermission(), DELIVERY_PERSON_READ.getPermission(),INVENTORY_KEEPER_READ.getPermission())
                 .requestMatchers(POST,"/api/v1/product/**").hasAnyAuthority(ADMIN_CREATE.getPermission(), INVENTORY_KEEPER_CREATE.getPermission())
-                .requestMatchers(PUT,"/api/v1/product/**").hasAnyAuthority(ADMIN_UPDATE.getPermission())
-                .requestMatchers(DELETE,"/api/v1/product/**").hasAnyAuthority(ADMIN_DELETE.getPermission())
+                .requestMatchers(PUT,"/api/v1/product/**").hasAnyAuthority(ADMIN_UPDATE.getPermission(), INVENTORY_KEEPER_UPDATE.getPermission())
+                .requestMatchers(DELETE,"/api/v1/product/**").hasAnyAuthority(ADMIN_UPDATE.getPermission(), INVENTORY_KEEPER_UPDATE.getPermission())
 
                 .anyRequest()
                 .authenticated()

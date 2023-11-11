@@ -39,7 +39,7 @@ public class Order {
     @Column(name = "is_prepared", nullable = false)
     private Boolean isPrepared;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<OrderItem> orderItems;
 }
