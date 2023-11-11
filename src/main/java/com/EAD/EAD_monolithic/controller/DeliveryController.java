@@ -1,9 +1,8 @@
 package com.EAD.EAD_monolithic.controller;
 
 import com.EAD.EAD_monolithic.dto.DeliveryDTO;
-
 import com.EAD.EAD_monolithic.dto.DeliveryPerson;
-
+import com.EAD.EAD_monolithic.dto.UserDelivery;
 import com.EAD.EAD_monolithic.entity.Delivery;
 import com.EAD.EAD_monolithic.service.DeliveryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +47,14 @@ public class DeliveryController {
 //    public Delivery getDeliveryById(@PathVariable int deliveryId){
 //        return deliveryService.getDeliveryById(deliveryId);
 //    }
+
+
+    //Dasun from order to delivery
+    @GetMapping("/getAllUserDelivery")
+    public List<UserDelivery> getAllUserDelivery() {
+        return deliveryService.getAllUserDelivery();
+    }
+
 
     @GetMapping("/getDeliveryPerson")
     public List<DeliveryPerson> getDeliveryPerson() {
