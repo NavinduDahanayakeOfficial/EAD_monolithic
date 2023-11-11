@@ -68,7 +68,6 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
-    @OrderColumn(name = "order_index")
     private List<Order> orders;
 
 }
