@@ -30,10 +30,10 @@ public class DeliveryController {
     }
 
     @PostMapping("/newDelivery")
-    public Delivery newDelivery(@RequestBody DeliveryDTO deliveryDTO){
-//        if(orderService.getOrderById(deliveryDTO.getDeliveryId()).getIsPrepared() == false){
-//            throw new NotFoundException("Order is no Prepared");
-//        }
+    public DeliveryDTO newDelivery(@RequestBody DeliveryDTO deliveryDTO){
+        if(orderService.getOrderById(deliveryDTO.getDeliveryId()).getIsPrepared() == false){
+            throw new NotFoundException("Order is no Prepared");
+        }
         return deliveryService.newDelivery(deliveryDTO);
     }
 
@@ -48,11 +48,11 @@ public class DeliveryController {
 
     @DeleteMapping("/deleteDelevery/{deliveryId}")
     public String deleteDelivery(@PathVariable int deliveryId){
-//        if(deliveryService.getDeliveryById(deliveryId).getStatus() == "Delivered"){
-//            return ("Can't Cancel. Order already delivered.");
-//        } else {
+        if(deliveryService.getDeliveryById(deliveryId).getStatus() == "Delivered"){
+            return ("Can't Cancel. Order already delivered.");
+        } else {
             return deliveryService.deleteDelivery(deliveryId);
-//        }
+        }
     }
 
     @GetMapping("/getDeliveryPerson")

@@ -39,7 +39,7 @@ public class DeliveryService {
         return modelMapper.map(deliveryList, new TypeToken<List<DeliveryDTO>>(){}.getType());
     }
 
-    public Delivery newDelivery(DeliveryDTO deliveryDTO){
+    public DeliveryDTO newDelivery(DeliveryDTO deliveryDTO){
         Delivery delivery = new Delivery();
         delivery.setDeliveryId(deliveryDTO.getDeliveryId());
         delivery.setOrder(orderService.getOrderById(deliveryDTO.getOrderId()));
@@ -47,7 +47,7 @@ public class DeliveryService {
         delivery.setDeliveryPerson(userCrudService.getUserById(deliveryDTO.getDeliveryPersonId()));
         delivery.setStatus(deliveryDTO.getStatus());
         deliveryRepo.save(delivery);
-        return delivery;
+        return deliveryDTO;
     }
 
     public Delivery getDeliveryById(int deliveryId) {
