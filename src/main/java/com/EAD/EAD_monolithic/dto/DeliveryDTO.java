@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class DeliveryDTO {
     private int deliveryId;
     private int orderId;
-//    private int customerId;
-//    private int deliveryPersonId;
+    private int customerId;
+    private int deliveryPersonId;
     private String status;
 }

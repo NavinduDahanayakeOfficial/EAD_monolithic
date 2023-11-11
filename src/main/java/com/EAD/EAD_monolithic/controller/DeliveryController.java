@@ -25,7 +25,7 @@ public class DeliveryController {
     private OrderService orderService;
 
     @GetMapping("/getDeliveries")
-    public List<Delivery> getAllDeliveries(){
+    public List<DeliveryDTO> getAllDeliveries(){
         return deliveryService.getAllDeliveries();
     }
 

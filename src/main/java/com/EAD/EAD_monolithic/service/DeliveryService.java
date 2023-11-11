@@ -34,17 +34,17 @@ public class DeliveryService {
     @Autowired
     private UserRepo userRepo;
 
-    public List<Delivery> getAllDeliveries(){
+    public List<DeliveryDTO> getAllDeliveries(){
         List<Delivery>deliveryList = deliveryRepo.findAll();
-        return modelMapper.map(deliveryList, new TypeToken<List<Delivery>>(){}.getType());
+        return modelMapper.map(deliveryList, new TypeToken<List<DeliveryDTO>>(){}.getType());
     }
 
     public Delivery newDelivery(DeliveryDTO deliveryDTO){
         Delivery delivery = new Delivery();
         delivery.setDeliveryId(deliveryDTO.getDeliveryId());
         delivery.setOrder(orderService.getOrderById(deliveryDTO.getOrderId()));
-//        delivery.setCustomer(userCrudService.getUserById(deliveryDTO.getCustomerId()));
-//        delivery.setDeliveryPerson(userCrudService.getUserById(deliveryDTO.getDeliveryPersonId()));
+        delivery.setCustomer(orderService.getOrderById(deliveryDTO.getOrderId()).getUser());
+        delivery.setDeliveryPerson(userCrudService.getUserById(deliveryDTO.getDeliveryPersonId()));
         delivery.setStatus(deliveryDTO.getStatus());
         deliveryRepo.save(delivery);
         return delivery;
