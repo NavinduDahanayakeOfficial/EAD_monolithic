@@ -34,9 +34,9 @@ public class DeliveryService {
     @Autowired
     private UserRepo userRepo;
 
-    public List<Delivery> getAllDeliveries(){
+    public List<DeliveryDTO> getAllDeliveries(){
         List<Delivery>deliveryList = deliveryRepo.findAll();
-        return modelMapper.map(deliveryList, new TypeToken<List<Delivery>>(){}.getType());
+        return modelMapper.map(deliveryList, new TypeToken<List<DeliveryDTO>>(){}.getType());
     }
 
     public Delivery newDelivery(DeliveryDTO deliveryDTO){
