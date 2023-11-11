@@ -62,8 +62,11 @@ public class User implements UserDetails {
         return true;
     }
 
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 //    @JsonIgnore
 //    private List<Order> orders;
+
+
+
 
 }

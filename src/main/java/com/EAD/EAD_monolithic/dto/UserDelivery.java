@@ -12,5 +12,5 @@ public class UserDelivery {
     private int orderId;
     private String deliveryStatus;
     private Double totalPrice;
-    private Boolean isPrepared;
+    private String deliveryAddress;
 }

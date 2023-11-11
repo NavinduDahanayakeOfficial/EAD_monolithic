@@ -88,7 +88,7 @@ public class DeliveryService {
             userDelivery.setOrderId(order.getOrderId());
             userDelivery.setDeliveryStatus(delivery.getStatus());
             userDelivery.setTotalPrice(order.getTotalPrice());
-            userDelivery.setIsPrepared(order.getIsPrepared());
+
 
             userDeliveryList.add(userDelivery);
         }
@@ -111,3 +111,4 @@ public class DeliveryService {
         return deliveryPersonList;
     }
 }
+

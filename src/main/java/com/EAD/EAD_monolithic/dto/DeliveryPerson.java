@@ -12,4 +12,20 @@ public class DeliveryPerson {
     private String deliveryStatus;
     private Double totalPrice;
     private Boolean isPrepared;
+//    private String address;
+//    private String firstName;
+//    private String lastName;
+
+//    public void setAddress(String address) {
+//        this.address = address;
+//    }
+//
+//    public void setFirstName(String firstName) {
+//        this.firstName = firstName;
+//    }
+//
+//    public void setLastName(String lastName) {
+//        this.lastName = lastName;
+//    }
+
 }

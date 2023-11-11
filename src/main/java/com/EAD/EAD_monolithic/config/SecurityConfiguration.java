@@ -11,6 +11,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import static com.EAD.EAD_monolithic.entity.Permission.*;
+import static com.EAD.EAD_monolithic.entity.Role.*;
 import static org.springframework.http.HttpMethod.*;
 
 @Configuration
@@ -41,18 +42,16 @@ public class SecurityConfiguration {
                 .requestMatchers(PUT,"/api/v1/product/**").hasAnyAuthority(ADMIN_UPDATE.getPermission())
                 .requestMatchers(DELETE,"/api/v1/product/**").hasAnyAuthority(ADMIN_DELETE.getPermission())
 
-<<<<<<< Updated upstream
                 .requestMatchers("api/v1/user/**").hasAnyRole(ADMIN.name(), CUSTOMER.name(), DELIVERY_PERSON.name(), INVENTORY_KEEPER.name())
                 .requestMatchers(GET,"/api/v1/user/**").hasAnyAuthority(ADMIN.name(), DELIVERY_PERSON.name(), INVENTORY_KEEPER.name())
                 .requestMatchers(DELETE,"/api/v1/user/**").hasAnyAuthority(ADMIN_DELETE.name())
                 .requestMatchers(PUT,"/api/v1/user/**").hasAnyAuthority(ADMIN.name())
 
-=======
-                .requestMatchers(GET, "/api/v1/delivery/**").hasAnyAuthority(ADMIN_READ.getPermission())
+                .requestMatchers(GET, "/api/v1/delivery/**").hasAnyAuthority(ADMIN_READ.getPermission(), CUSTOMER_READ.getPermission(), DELIVERY_PERSON_READ.getPermission())
                 .requestMatchers(POST,"/api/v1/delivery/**").hasAnyAuthority(ADMIN_CREATE.getPermission(), INVENTORY_KEEPER_CREATE.getPermission())
                 .requestMatchers(PUT,"/api/v1/delivery/**").hasAnyAuthority(ADMIN_UPDATE.getPermission())
                 .requestMatchers(DELETE,"/api/v1/delivery/**").hasAnyAuthority(ADMIN_DELETE.getPermission())
->>>>>>> Stashed changes
+
 
                 .anyRequest()
                 .authenticated()
