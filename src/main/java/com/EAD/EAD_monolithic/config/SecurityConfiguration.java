@@ -44,6 +44,12 @@ public class SecurityConfiguration {
                 .requestMatchers(PUT,"/api/v1/product/**").hasAnyAuthority(ADMIN.name())
                 .requestMatchers(DELETE,"/api/v1/product/**").hasAnyAuthority(ADMIN_DELETE.name())
 
+                .requestMatchers("api/v1/user/**").hasAnyRole(ADMIN.name(), CUSTOMER.name(), DELIVERY_PERSON.name(), INVENTORY_KEEPER.name())
+                .requestMatchers(GET,"/api/v1/user/**").hasAnyAuthority(ADMIN.name(), DELIVERY_PERSON.name(), INVENTORY_KEEPER.name())
+                .requestMatchers(DELETE,"/api/v1/user/**").hasAnyAuthority(ADMIN_DELETE.name())
+                .requestMatchers(PUT,"/api/v1/user/**").hasAnyAuthority(ADMIN.name())
+
+
                 .anyRequest()
                 .authenticated()
                 .and()
