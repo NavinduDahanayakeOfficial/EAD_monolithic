@@ -4,7 +4,7 @@ import com.EAD.EAD_monolithic.Exception.EmailAlreadyExistException;
 import com.EAD.EAD_monolithic.Exception.EmailOrPasswordIncorrectException;
 import com.EAD.EAD_monolithic.config.JwtService;
 import com.EAD.EAD_monolithic.entity.User;
-import com.EAD.EAD_monolithic.repo.UserRepository;
+import com.EAD.EAD_monolithic.repo.UserRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,7 +18,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AuthenticationService {
 
-    private final UserRepository repository;
+    private final UserRepo repository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
@@ -31,10 +31,11 @@ public class AuthenticationService {
         }
         else{
             var user= User.builder()
-                    .firstName(request.getFirstname())
-                    .lastName(request.getLastname())
+                    .firstName(request.getFirstName())
+                    .lastName(request.getLastName())
                     .email(request.getEmail())
                     .password(passwordEncoder.encode(request.getPassword()))
+                    .deliveryAddress(request.getDeliveryAddress())
                     .role(request.getRole())
                     .build();
             repository.save(user);

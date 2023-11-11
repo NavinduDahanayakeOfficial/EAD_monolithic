@@ -11,7 +11,9 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public enum Role {
+    //unauthorized user don't have any permission
     USER(Collections.emptySet()),
+
     ADMIN(
             Set.of(
                     Permission.ADMIN_READ,

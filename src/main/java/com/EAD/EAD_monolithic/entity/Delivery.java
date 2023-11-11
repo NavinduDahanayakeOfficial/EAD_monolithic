@@ -1,5 +1,6 @@
 package com.EAD.EAD_monolithic.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,17 +21,14 @@ public class Delivery {
     @JoinColumn(name = "orderId", referencedColumnName = "orderId")
     private Order order;
 
-//    public String getDeliveryStatus() {
-//        return status;
-//    }
-
-//    @ManyToOne
-//    @JoinColumn(name = "customerId", referencedColumnName = "userId")
-//    private User customer;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "customerId", referencedColumnName = "userId")
+    @JsonBackReference
+    private User customer;
 //
-//    @ManyToOne
-//    @JoinColumn(name = "deliveryPersonId", referencedColumnName = "userId")
-//    private User deliveryPerson;
+    @ManyToOne
+    @JoinColumn(name = "deliveryPersonId", referencedColumnName = "userId")
+    private User deliveryPerson;
 
 
 }
