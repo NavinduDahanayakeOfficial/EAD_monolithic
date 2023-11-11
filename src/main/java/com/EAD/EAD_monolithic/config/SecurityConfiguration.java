@@ -41,16 +41,6 @@ public class SecurityConfiguration {
                 .requestMatchers(PUT,"/api/v1/product/**").hasAnyAuthority(ADMIN_UPDATE.getPermission())
                 .requestMatchers(DELETE,"/api/v1/product/**").hasAnyAuthority(ADMIN_DELETE.getPermission())
 
-                .requestMatchers("api/v1/user/**").hasAnyRole(ADMIN.name(), CUSTOMER.name(), DELIVERY_PERSON.name(), INVENTORY_KEEPER.name())
-                .requestMatchers(GET,"/api/v1/user/**").hasAnyAuthority(ADMIN.name(), DELIVERY_PERSON.name(), INVENTORY_KEEPER.name())
-                .requestMatchers(DELETE,"/api/v1/user/**").hasAnyAuthority(ADMIN_DELETE.name())
-                .requestMatchers(PUT,"/api/v1/user/**").hasAnyAuthority(ADMIN.name())
-
-                .requestMatchers(GET,"/api/v1/delivery/**").hasAnyAuthority(ADMIN_READ.getPermission(), CUSTOMER_READ.getPermission(), DELIVERY_PERSON_READ.getPermission())
-                .requestMatchers(POST,"/api/v1/delivery/**").hasAnyAuthority(ADMIN_CREATE.getPermission(), INVENTORY_KEEPER_CREATE.getPermission())
-                .requestMatchers(PATCH,"/api/v1/delivery/**").hasAnyAuthority(ADMIN_UPDATE.getPermission())
-                .requestMatchers(DELETE,"/api/v1/delivery/**").hasAnyAuthority(ADMIN_DELETE.getPermission(), INVENTORY_KEEPER_CREATE.getPermission())
-
                 .anyRequest()
                 .authenticated()
                 .and()
