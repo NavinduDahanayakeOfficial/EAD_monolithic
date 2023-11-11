@@ -143,7 +143,7 @@ public class OrderService {
             // Find the existing order item by item ID
             OrderItem existingOrderItem = order.getOrderItems().stream()
                     .filter(item -> item.getInventory().getItemId() == orderItemRequest.getItemId())
-                    .findFirst()
+                    .findAny()
                     .orElseThrow(() -> new NotFoundException("Order item not found"));
 
             // Update the quantity
@@ -165,13 +165,25 @@ public class OrderService {
                 .sum();
     }
 
-    public String deleteOrder(int id){
+    public String deleteOrder(int id) {
         Order order = orderRepo.findById(id).orElse(null);
         if (order == null) {
             throw new NotFoundException("Order not found with id " + id);
         }
+
+        // Update inventory for each order item
+        for (OrderItem orderItem : order.getOrderItems()) {
+            Inventory inventory = orderItem.getInventory();
+            int updatedQuantity = inventory.getQuantity() + orderItem.getQuantity();
+            inventory.setQuantity(updatedQuantity);
+
+            inventoryRepo.save(inventory);
+        }
+
+        // Delete the order
         orderRepo.deleteById(id);
-        return "order deleted with id " + id;
+
+        return "Order deleted with id " + id;
     }
 
     public void updateOrderPreparedStatus(int orderId, boolean isPrepared) {

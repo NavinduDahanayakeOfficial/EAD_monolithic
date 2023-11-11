@@ -42,9 +42,9 @@ public class SecurityConfiguration {
                 .requestMatchers(PUT,"/api/v1/product/**").hasAnyAuthority(ADMIN_UPDATE.getPermission(), INVENTORY_KEEPER_UPDATE.getPermission())
                 .requestMatchers(DELETE,"/api/v1/product/**").hasAnyAuthority(ADMIN_UPDATE.getPermission(), INVENTORY_KEEPER_UPDATE.getPermission())
 
-                .requestMatchers(GET,"/api/v1/user/**").hasAnyAuthority(ADMIN_READ.getPermission())
-                .requestMatchers(PUT,"/api/v1/user/**").hasAnyAuthority(ADMIN_UPDATE.getPermission())
-                .requestMatchers(DELETE,"/api/v1/user/**").hasAnyAuthority(ADMIN_UPDATE.getPermission())
+                .requestMatchers(GET,"/api/v1/user/**").hasAuthority(ADMIN_READ.getPermission())
+                .requestMatchers(PUT,"/api/v1/user/**").hasAuthority(ADMIN_UPDATE.getPermission())
+                .requestMatchers(DELETE,"/api/v1/user/**").hasAuthority(ADMIN_UPDATE.getPermission())
 
                 .anyRequest()
                 .authenticated()
