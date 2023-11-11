@@ -3,6 +3,7 @@ package com.EAD.EAD_monolithic.service;
 import com.EAD.EAD_monolithic.Exception.OrderNotFoundException;
 import com.EAD.EAD_monolithic.dto.DeliveryDTO;
 import com.EAD.EAD_monolithic.dto.DeliveryPerson;
+import com.EAD.EAD_monolithic.dto.UserDelivery;
 import com.EAD.EAD_monolithic.entity.Delivery;
 import com.EAD.EAD_monolithic.entity.Order;
 import com.EAD.EAD_monolithic.repo.DeliveryRepo;
@@ -75,6 +76,24 @@ public class DeliveryService {
 //        }
 //        return delivery;
 //    }
+
+    //Dasun from order to delivery
+    public List<UserDelivery> getAllUserDelivery() {
+        List<Order> orderList = orderRepo.findAll();
+        List<UserDelivery> userDeliveryList = new ArrayList<>();
+        for (Order order : orderList) {
+            Delivery delivery = deliveryRepo.findByOrder(order);
+            UserDelivery userDelivery = new UserDelivery();
+            userDelivery.setDeliveryId(delivery.getDeliveryId());
+            userDelivery.setOrderId(order.getOrderId());
+            userDelivery.setDeliveryStatus(delivery.getStatus());
+            userDelivery.setTotalPrice(order.getTotalPrice());
+            userDelivery.setIsPrepared(order.getIsPrepared());
+
+            userDeliveryList.add(userDelivery);
+        }
+        return userDeliveryList;
+    }
 
     public List<DeliveryPerson> getDeliveryPerson() {
         List<Order> orderList = orderRepo.findAll();

@@ -4,13 +4,14 @@ package com.EAD.EAD_monolithic.service;
 import com.EAD.EAD_monolithic.Exception.InsufficientProductQuantityException;
 import com.EAD.EAD_monolithic.Exception.OrderNotFoundException;
 import com.EAD.EAD_monolithic.Exception.ProductNotFoundException;
-import com.EAD.EAD_monolithic.dto.*;
-import com.EAD.EAD_monolithic.entity.Delivery;
+import com.EAD.EAD_monolithic.dto.OrderDTO;
+import com.EAD.EAD_monolithic.dto.OrderItemRequest;
+import com.EAD.EAD_monolithic.dto.OrderRequest;
+import com.EAD.EAD_monolithic.dto.OrderUpdateRequest;
 import com.EAD.EAD_monolithic.entity.Order;
 import com.EAD.EAD_monolithic.entity.OrderItem;
 import com.EAD.EAD_monolithic.entity.Product;
 import com.EAD.EAD_monolithic.repo.DeliveryRepo;
-import com.EAD.EAD_monolithic.repo.OrderItemRepo;
 import com.EAD.EAD_monolithic.repo.OrderRepo;
 import com.EAD.EAD_monolithic.repo.ProductRepo;
 import jakarta.transaction.Transactional;
@@ -202,21 +203,6 @@ public class OrderService {
         return "order deleted with id " + id;
     }
 
-    public List<UserDelivery> getAllUserDelivery() {
-        List<Order> orderList = orderRepo.findAll();
-        List<UserDelivery> userDeliveryList = new ArrayList<>();
-        for (Order order : orderList) {
-            Delivery delivery = deliveryRepo.findByOrder(order);
-            UserDelivery userDelivery = new UserDelivery();
-            userDelivery.setDeliveryId(delivery.getDeliveryId());
-            userDelivery.setOrderId(order.getOrderId());
-            userDelivery.setDeliveryStatus(delivery.getStatus());
-            userDelivery.setTotalPrice(order.getTotalPrice());
-            userDelivery.setIsPrepared(order.getIsPrepared());
 
-            userDeliveryList.add(userDelivery);
-        }
-        return userDeliveryList;
-    }
 }
 
