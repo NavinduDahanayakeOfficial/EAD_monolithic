@@ -24,11 +24,14 @@ public class PaymentService {
     public PaymentResponseDTO initiatePayment(PaymentRequestDTO PaymentRequestDTO) {
         PaymentResponseDTO responseDTO = new PaymentResponseDTO();
         try {
+
             long amount = PaymentRequestDTO.getAmount();
             if (amount == 0 || isNull(amount)) {
-                responseDTO.setMessage("Please enter a amount");
+                responseDTO.setMessage("Total Amount is 0. There must be a problem in the transaction.");
                 return responseDTO;
             }
+
+
             PaymentIntent paymentIntent = stripeService.createPaymentIntent(amount);
             responseDTO.setMessage("Payment initiated");
             responseDTO.setClientSecret(paymentIntent.getClientSecret());

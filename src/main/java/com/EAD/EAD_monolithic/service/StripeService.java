@@ -19,7 +19,7 @@ public class StripeService {
     public PaymentIntent createPaymentIntent(long amount) throws StripeException {
         return PaymentIntent.create(new HashMap<String, Object>() {{
             put("amount", Math.round(amount * 100));
-            put("currency", "INR");
+            put("currency", "LKR");
             put("payment_method_types", new String[]{"card"});
 //            put("metadata", Map.of("name", amount));
         }});
