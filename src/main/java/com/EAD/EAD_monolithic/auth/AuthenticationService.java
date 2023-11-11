@@ -45,7 +45,6 @@ public class AuthenticationService {
                     .build();
 
         }
-
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
