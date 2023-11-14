@@ -1,6 +1,7 @@
 package com.EAD.EAD_monolithic.service;
 
 import com.EAD.EAD_monolithic.Exception.UserNotFoundException;
+import com.EAD.EAD_monolithic.dto.UserResponseDTO;
 import com.EAD.EAD_monolithic.dto.UserUpdateDTO;
 import com.EAD.EAD_monolithic.entity.User;
 import com.EAD.EAD_monolithic.repo.UserRepo;
@@ -22,12 +23,21 @@ public class UserCrudService {
     private ModelMapper modelMapper;
 
 
-    public List<User> getAllUsers(){
-        List<User>userList = userRepo.findAll();
-        return modelMapper.map(userList, new TypeToken<List<User>>(){}.getType());
+    public List<UserResponseDTO> getAllUsers() {
+        List<User> userList = userRepo.findAll();
+        return modelMapper.map(userList, new TypeToken<List<UserResponseDTO>>(){}.getType());
     }
 
-    public User getUserById(int userId) {
+
+    public UserResponseDTO getUserById(int userId) {
+        User user = userRepo.findById(userId).orElse(null);
+        if (user == null) {
+            throw new UserNotFoundException("User not found with id " + userId);
+        }
+        return modelMapper.map(user, UserResponseDTO.class);
+    }
+
+    public User getUserByIdAllDetail(int userId) {
         User user = userRepo.findById(userId).orElse(null);
         if (user == null) {
             throw new UserNotFoundException("User not found with id " + userId);

@@ -44,7 +44,7 @@ public class DeliveryService {
         delivery.setDeliveryId(deliveryDTO.getDeliveryId());
         delivery.setOrder(orderService.getOrderById(deliveryDTO.getOrderId()));
         delivery.setCustomer(orderService.getOrderById(deliveryDTO.getOrderId()).getUser());
-        delivery.setDeliveryPerson(userCrudService.getUserById(deliveryDTO.getDeliveryPersonId()));
+        delivery.setDeliveryPerson(userCrudService. getUserByIdAllDetail(deliveryDTO.getDeliveryPersonId()));
         delivery.setStatus(deliveryDTO.getStatus());
         deliveryRepo.save(delivery);
         return delivery;

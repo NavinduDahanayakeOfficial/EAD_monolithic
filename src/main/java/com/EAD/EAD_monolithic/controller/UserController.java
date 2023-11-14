@@ -2,6 +2,7 @@ package com.EAD.EAD_monolithic.controller;
 
 
 
+import com.EAD.EAD_monolithic.dto.UserResponseDTO;
 import com.EAD.EAD_monolithic.dto.UserUpdateDTO;
 import com.EAD.EAD_monolithic.entity.User;
 import com.EAD.EAD_monolithic.service.UserCrudService;
@@ -18,12 +19,12 @@ public class UserController {
     private UserCrudService userService;
 
     @GetMapping("/getUsers")
-    public List<User> getAllUsers(){
+    public List<UserResponseDTO> getAllUsers() {
         return userService.getAllUsers();
     }
 
     @GetMapping("/getUserById/{userId}")
-    public User getUserById(@PathVariable int userId){
+    public UserResponseDTO getUserById(@PathVariable int userId){
         return userService.getUserById(userId);
     }
 
