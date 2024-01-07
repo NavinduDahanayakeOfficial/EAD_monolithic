@@ -1,3 +1,7 @@
+package com.EAD.EAD_monolithic.controller;
+
+import com.EAD.EAD_monolithic.dto.InventoryDTO;
+import com.EAD.EAD_monolithic.service.InventoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
