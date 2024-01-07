@@ -1,3 +1,5 @@
+package com.EAD.EAD_monolithic.service;
+
 import com.EAD.EAD_monolithic.dto.InventoryDTO;
 import com.EAD.EAD_monolithic.entity.Inventory;
 import com.EAD.EAD_monolithic.repo.InventoryRepo;
